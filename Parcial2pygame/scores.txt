@@ -1,0 +1,9 @@
+xd 4
+jony 1
+asd 10
+jon 7
+jony 13
+d 0
+s 0
+sd 0
+ff 0
