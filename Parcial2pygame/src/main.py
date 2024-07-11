@@ -25,14 +25,13 @@ def main_menu():
         mouse_over_button = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                terminar()
 
-        if draw_button(screen,font,"Play", pygame.Rect(300, 350, 200, 50), BLUE, PINK, game_loop):
+        if draw_button(screen,font,"Play", pygame.Rect(300, 350, 200, 50), BLUE, YELLOW, game_loop):
             mouse_over_button = True
-        if draw_button(screen,font,"Ranking", pygame.Rect(300, 425, 200, 50), BLUE, PINK, show_ranking):
+        if draw_button(screen,font,"Ranking", pygame.Rect(300, 425, 200, 50), BLUE, YELLOW, show_ranking):
             mouse_over_button = True          
-        if draw_button(screen,font,"Salir", pygame.Rect(300, 500, 200, 50), RED, PINK, quit_game):
+        if draw_button(screen,font,"Salir", pygame.Rect(300, 500, 200, 50), RED, YELLOW, terminar):
             mouse_over_button = True
 
         if mouse_over_button:

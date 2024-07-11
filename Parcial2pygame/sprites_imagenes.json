@@ -1,0 +1,15 @@
+{
+    "personaje_quieto": ["src/assets/img/Kirbyyy.png"],
+    "personaje_camina_derecha": [
+        "src/assets/img/caminar1.png",
+        "src/assets/img/caminar2.png",
+        "src/assets/img/caminar3.png",
+        "src/assets/img/caminar4.png",
+        "src/assets/img/caminar5.png"
+    ],
+    "enemigo_camina": [
+        "src/assets/img/enemigo1.png",
+        "src/assets/img/enemigo3.png",
+        "src/assets/img/enemigo4.png"
+    ]
+}

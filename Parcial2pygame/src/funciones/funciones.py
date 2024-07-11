@@ -1,25 +1,11 @@
+import json
 import pygame
-import sys
-from random import randrange,randint
+
 
 from funciones.configg import *
 
-def create_block(imagen=None, left=0, top=0, width=50, height=50):
-    """
-    Crea un bloque representado por un diccionario con un rectángulo y una imagen opcional.
 
-    Args:
-        imagen (pygame.Surface): La imagen que se mostrará en el bloque. Predeterminado es None.
-        left (int): La coordenada x de la esquina superior izquierda del bloque. Predeterminado es 0.
-        top (int): La coordenada y de la esquina superior izquierda del bloque. Predeterminado es 0.
-        width (int): El ancho del bloque. Predeterminado es 50.
-        height (int): La altura del bloque. Predeterminado es 50.
-
-    Returns:
-        dict: Un diccionario que contiene el rectángulo y la imagen del bloque.
-    """
-    return {"rect": pygame.Rect(left, top, width, height), "img": imagen}
-
+# juego
 
 def crear_personaje(diccionario_animaciones):
     """
@@ -94,24 +80,6 @@ def mostrar_texto(superficie, texto, fuente, coordenada, color=WHITE, color_fond
     superficie.blit(sticker, rect)
 
 
-def wait_user(tecla):
-    """
-    Espera a que el usuario presione una tecla específica para continuar.
-
-    Args:
-        tecla (int): La tecla que se espera.
-
-    Returns:
-        None
-    """
-    continuar = True
-    while continuar:
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                terminar()
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == tecla:
-                    continuar = False
 
 
 def distancia_entre_puntos(pto_1: tuple[int, int], pto_2: tuple[int, int]):
@@ -143,6 +111,7 @@ def calcular_radio(rect):
     return rect.width // 2
 
 
+
 def detectar_colision_circulo(rect1, rect2):
     """
     Detecta si dos círculos (representados por rectángulos) están colisionando.
@@ -158,7 +127,6 @@ def detectar_colision_circulo(rect1, rect2):
     r2 = calcular_radio(rect2)
     distancia = distancia_entre_puntos(rect1.center, rect2.center)
     return distancia <= r1 + r2
-
 
 def draw_button(screen, font, text, rect, color, hover_color, action=None):
     """
@@ -193,16 +161,6 @@ def draw_button(screen, font, text, rect, color, hover_color, action=None):
     
     return hovered
 
-
-def quit_game():
-    """
-    Termina el juego cerrando pygame y saliendo del sistema.
-
-    Returns:
-        None
-    """
-    pygame.quit()
-    sys.exit()
 
 
 JUMP_LIMIT = 345 
@@ -293,7 +251,7 @@ def terminar():
     pygame.quit()
     exit()
 
-
+# imagenes
 def reescalar_imagenes(diccionario_animaciones, ancho, alto):
     """
     Reescala todas las imágenes en el diccionario de animaciones a las dimensiones especificadas.
@@ -328,38 +286,74 @@ def rotar_imagen(imagenes):
         lista_imagenes.append(imagen_rotada)
     return lista_imagenes
 
+# archivos
+def obtener_path_actual(nombre_archivo: str) -> str:
+    """
+    Obtiene la ruta del directorio actual.
 
-# --------------------------------------------------------------------------------------------------------------------
-# --------------------------------------------------------------------------------------------------------------------
-# --------------------------------------------------------------------------------------------------------------------
+    Parámetros:
+    nombre_archivo (str): El nombre del archivo.
 
-personaje_quieto = [pygame.image.load(r"src\assets\img\Kirbyyy.png")]
-personaje_camina_derecha = [pygame.image.load(r"src\assets\img\caminar1.png"),
-                            pygame.image.load(r"src\assets\img\caminar2.png"),
-                            pygame.image.load(r"src\assets\img\caminar3.png"),
-                            pygame.image.load(r"src\assets\img\caminar4.png"),
-                            pygame.image.load(r"src\assets\img\caminar5.png")
-                            ]
-personaje_camina_izquierda = rotar_imagen(personaje_camina_derecha)
+    Retorna:
+    str: La ruta completa del archivo.
+    """
+    import os
 
-diccionario_animaciones = {
-    "Quieto": personaje_quieto,
-    "Derecha": personaje_camina_derecha,
-    "Izquierda": personaje_camina_izquierda
-}
+    path = os.path.dirname(__file__)
+    return os.path.join(path, nombre_archivo)
 
-reescalar_imagenes(diccionario_animaciones, 80, 80)
+ 
+def leer_archivo_csv(nombre_archivo) :
+    """
+    Lee un archivo CSV y devuelve una lista de diccionarios representando los datos.
+
+    Parámetros:
+    nombre_archivo (str): El nombre del archivo CSV.
+
+    Retorna:
+    list: Una lista de diccionarios representando los datos del archivo CSV.
+    """
+   
+    with open(obtener_path_actual(nombre_archivo),"r", encoding="utf-8") as archivo:
+        lista = []
+        archivo.readline()
+        
+        # encabezado = encabezado.split(",")
+        # print(encabezado)
+        archivo.readlines()
+    
+    return lista
+
+def cargar_rutas_imagenes_json(nombre_archivo):
+    """
+    Carga las rutas de las imágenes desde un archivo JSON.
+
+    Args:
+        nombre_archivo (str): El nombre del archivo JSON que contiene las rutas de las imágenes.
+
+    Returns:
+        dict: Un diccionario donde las claves son los nombres de las animaciones y los valores son listas de rutas de imágenes.
+    """
+    with open(nombre_archivo, 'r') as file:
+        rutas_imagenes = json.load(file)
+    return rutas_imagenes
+
+def cargar_imagenes(rutas):
+    """
+    Carga las imágenes desde las rutas proporcionadas.
+
+    Args:
+        rutas (list): Una lista de cadenas que representan las rutas de las imágenes.
+
+    Returns:
+        list: Una lista de objetos de imagen cargados por Pygame.
+    """
+    return [py.image.load(ruta) for ruta in rutas]
+
+# ------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------
 
 
-enemigo_camina = [
-                   pygame.image.load(r"src\assets\img\enemigo1.png"),
-                   pygame.image.load(r"src\assets\img\enemigo3.png"),
-                   pygame.image.load(r"src\assets\img\enemigo4.png")]
-enemigo_camina_izquierda = rotar_imagen(enemigo_camina)
 
-diccionario_animaciones_enemigo = {
-    "Izquierda": enemigo_camina_izquierda,
-    "Derecha": enemigo_camina
-}
-reescalar_imagenes(diccionario_animaciones_enemigo, 60, 60)
 

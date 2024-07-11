@@ -1,6 +1,7 @@
 import pygame
 import sys
 from funciones.funciones import *
+from funciones.cargar_imagenes import *
 from funciones.configg import *
 
 # Configurar la pantalla
@@ -60,8 +61,7 @@ def game_loop():
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                terminar()
             elif evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_f:
                     if len(lasers) == 0:
@@ -79,7 +79,7 @@ def game_loop():
                     direcion_laser = "right"
                     move_right = True
                     move_left = False
-                if evento.key == pygame.K_UP and not is_jumping:
+                if evento.key == py.K_UP and not is_jumping:
                     is_jumping = True
                     vel_y = -jump_speed
                     
@@ -148,9 +148,8 @@ def game_loop():
                     Enemigos.remove(enemy)
                     score += 1
                     lasers.remove(laser)
-                    if score ==  10:
+                    if score == score * 5:
                         lives += 1
-        
         for enemy in Enemigos[:] :
             if detectar_colision_circulo(personaje["rect"], enemy["rect"]):
                 Enemigos.remove(enemy)
